@@ -12,9 +12,3 @@ plot(ToothGrowth$dose, ToothGrowth$len, mmain = "Effect of Vitamin C on Tooth Gr
      xlab = "Dosage", ylab = "Length")
 boxplot(ToothGrowth$dose, ToothGrowth$len)
 
-#The raw data behind the story [A Complete Catalog Of Every Time Someone Cursed Or Bled Out In A Quentin Tarantino Movie]
-
-URL <- paste0('http://fivethirtyeight.com/features/complete-catalog-curses-deaths-quentin-tarantino-films')
-download.file(URL, 'taratino.csv')
-
-data <- read.table("taratino.csv", encoding="UTF8-MAC", sep=",", quote="",stringsAsFactors=FALSE)

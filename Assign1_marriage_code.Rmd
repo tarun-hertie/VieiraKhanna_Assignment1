@@ -1,0 +1,20 @@
+---
+title: "Analysis of Marriage Trends in the US"
+output: html
+---
+
+This code contains analysis of data on marriage trends.
+(Source data: Decennial Census (years 1960 to 2000) and American Community Survey (years 2001-2012), via IPUMS USA.) 
+
+```{r}
+library(rio)
+marriage <- import('https://raw.githubusercontent.com/fivethirtyeight/data/master/marriage/both_sexes.csv')
+```
+
+You can also embed plots, for example:
+
+```{r,  echo=FALSE}
+plot(marriage$all_2534)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.

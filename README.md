@@ -1,14 +1,6 @@
-This is the README file for the first assignment due on 7th October 2016. 
+This is the README file for the first assignment due on 7th October 2016. We plan to use the R to analyse two datasets. The first data set is an internal data set in R and the second is a dataset located on GitHub. 
 
-setwd('/Users/tarunkhanna/Desktop/Collaborative Data Methods/VieiraKhanna_Assignment1')
 
-data() # List internal data sets:
-data(ToothGrowth) #The Effect of Vitamin C on Tooth Growth in Guinea Pigs
-names(ToothGrowth)
 
-summary(ToothGrowth$len)
-hist(ToothGrowth$dose, main ="Dosage of Vitamin C given to Guinea Pigs", xlab = "Dosage")
-plot(ToothGrowth$dose, ToothGrowth$len, mmain = "Effect of Vitamin C on Tooth Growth", 
-     xlab = "Dosage", ylab = "Length")
-boxplot(ToothGrowth$dose, ToothGrowth$len)
+
 

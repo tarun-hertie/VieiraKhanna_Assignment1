@@ -1,0 +1,107 @@
+---
+title: "Pair Assignment 1"
+author: "Tarun Khanna and Camila Vieira"
+output: html_document
+---
+```{r, include=T, message=F, warning=FALSE, error=FALSE, echo=FALSE}
+source('data_download.R')
+```
+
+# Exercise 1 -  Alcohol Consumption across the World
+This exercise deals with the analysis of data on consumption of alcohol per person across the world. The analysis has been performed on data provided by the World Health Organisation, Global Information System on Alcohol and Health (GISAH), 2010) 
+
+##Analysis
+
+According to WHO, beer was the drink of choice in 2010.The average consumption (per person in units of serving) of different forms of alcohol - beer, wine and spirits - was: 
+
+```{r, include=T, message=F, warning=FALSE, error=FALSE, echo=FALSE}
+for (i in 2:4) {
+  alc[,i] %>%
+  mean() %>%
+  round(, digits = -2) %>%
+  paste0(names(alc)[i],.,'\n') %>%
+  cat()  
+}
+
+```
+
+But the consumption of alcohol varies across countries. The histograms of beer, wine and spirit consumption show that in a large number of the countries the consumption of is much lower than the average. 
+
+```{r, include=T, message=F, warning=FALSE, error=FALSE, echo=FALSE}
+
+par(mfrow=c(2,2))
+hist(alc$beer_servings, xlab = 'Consuption per person', ylab = 'No. of countries', main = 'Consumption Pattern of Beer')
+hist(alc$wine_servings, xlab = 'Consuption per person', ylab = 'No. of countries', main = 'Consumption Pattern of Wine')
+hist(alc$spirit_servings, xlab = 'Consuption per person', ylab = 'No. of countries', main = 'Consumption Pattern of Spirits')
+
+s1 <- summary(alc$beer_servings)
+#extract the consumption data to put it in row form in a new data frame
+#wine <- alc[,4]
+#beer <- alc[,2]
+# Now, combine your two dataframes into one.  First make a new column in ea
+#wine$marker <- 'wine'
+#beer$marker <- 'beer'
+#consumption <- rbind(wine, beer)
+#ggplot(alc, aes(length, fill = veg)) + geom_histogram(alpha = 0.5, aes(y = ..density..), position = 'identity')
+
+```
+
+For example, a closer look at the data reveals that the while the average beer consumption across all countries in 2010 was `r s1[4]`, it varied from `r s1[1]` to a maximum of `r s1[6]`. In most countries the consumption per person was only `r s1[3]`. 
+
+### _Top 10 countries by consumption_  
+```{r, include=T, message=F, warning=FALSE, error=FALSE, echo=FALSE}
+Top10_Beer <- alc[order(alc$beer_servings),]%>% top_n(n=10) %>% .[,c(1,2)]
+Top10_Wine <- alc[order(alc$wine_servings),]%>% top_n(n=10) %>% .[,c(1,4)]
+Top10_Spirits <- alc[order(alc$spirit_servings),]%>% top_n(n=10) %>% .[,c(1,3)]
+l <- cbind(Top10_Spirits,Top10_Beer,Top10_Wine)
+l
+```
+
+
+Further, the top 10 beer consuming countries same to be the same as top 10 consumers of wine and other spirits though the ranking differs with the choice of drink. While `r l[10,5]` has the highest consumption of  Wine, `r l[10,1]` has the highest consumption of Spirits.   
+
+# Exercise 2
+
+This exercise analyses data on marriage trends in the US from 1960 to 2000. The results are based on analysis of the Decennial Census (years 1960 to 2000) and American Community Survey (years 2001-2012) 
+
+##Analysis
+
+A preliminary look at the data indicates that the proportion of men and women who never marry has been increasing in the US and has reached almost reached 50%. 
+
+```{r include=T, message=F, echo=FALSE, warning=FALSE, error=FALSE}
+
+library(ggplot2)
+ggplot(data = mrg, mapping = aes(year, all_2534)) + geom_line()+xlab('year') + ylab('% people who never married')
+
+```
+
+
+The rate of marriage varies across race. The average proportion (over time) of people who never married for each racial group is given below: 
+
+```{r include=T, message=F, echo=FALSE, warning=FALSE, error=FALSE}
+library(dplyr)
+for (i in 10:12) {
+  mrg[,i] %>%
+  mean() %>%
+  round(.,2) %>%  
+  paste0("The mean for ",names(mrg)[i], " is ",.,'\n') %>%
+  cat()  
+}
+
+```
+
+
+A black person is thus most likely to have never got married. The trend is stable across time as can be seen from the graph below. A similar trend is seen for poor vs. rich people. 
+```{r include=T, message=F, echo=FALSE, warning=FALSE, error=FALSE}
+
+library(ggplot2)
+p1 <- ggplot(data = mrg, aes(year)) + geom_line(aes(y= mrg[,10], colour = "White")) + geom_line(aes(y= mrg[,11], colour = "Black")) + geom_line(aes(y= mrg[,12], colour = "Hispanic")) + xlab('year') + ylab('% people who never married')
+
+p2 <- ggplot(data = mrg, aes(year)) +geom_line(aes(y= mrg[,21], colour = "Rich"))   + geom_line(aes(y= mrg[,19], colour = "Poor"))+  geom_line(aes(y= mrg[,20], colour = "Middle Income"))+ xlab('year') + ylab('% people who never married')
+
+library(gridExtra)
+grid.arrange(p1,p2, ncol=2, top = "Marriage trends across Socio-Economic groups in the US")
+```
+
+
+

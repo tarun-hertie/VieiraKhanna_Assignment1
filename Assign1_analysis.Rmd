@@ -10,9 +10,7 @@ source('data_download.R')
 # Exercise 1 -  Alcohol Consumption across the World
 This exercise deals with the analysis of data on consumption of alcohol per person across the world. The analysis has been performed on data provided by the World Health Organisation, Global Information System on Alcohol and Health (GISAH), 2010) 
 
-##Analysis
-
-According to WHO, beer was the drink of choice in 2010.The average consumption (per person in units of serving) of different forms of alcohol - beer, wine and spirits - was: 
+According to the data, beer was the drink of choice in 2010.The average consumption (per person in units of serving) of different forms of alcohol - beer, wine and spirits - was: 
 
 ```{r, include=T, message=F, warning=FALSE, error=FALSE, echo=FALSE}
 for (i in 2:4) {
@@ -63,8 +61,6 @@ Further, the top 10 beer consuming countries same to be the same as top 10 consu
 # Exercise 2
 
 This exercise analyses data on marriage trends in the US from 1960 to 2000. The results are based on analysis of the Decennial Census (years 1960 to 2000) and American Community Survey (years 2001-2012) 
-
-##Analysis
 
 A preliminary look at the data indicates that the proportion of men and women who never marry has been increasing in the US and has reached almost reached 50%. 
 

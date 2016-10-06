@@ -1,29 +1,56 @@
 ---
 title: "Analysis of Marriage Trends in the US"
 output: html_document
-bibliography: bibliography.bib
 ---
+# About this exercise
+This code contains analysis of data on marriage trends in the US from 1960 to 2000.
+Source data: Decennial Census (years 1960 to 2000) and American Community Survey (years 2001-2012) 
 
-This code contains analysis of data on marriage trends.
-(Source data: Decennial Census (years 1960 to 2000) and American Community Survey (years 2001-2012), via IPUMS USA.) 
-
-```{r}
+```{r, include=F, message=F, warning=FALSE, error=FALSE, echo=FALSE}
 #install.packages('rio')
 library(rio)
 setwd('/Users/tarunkhanna/Desktop/Collaborative Data Methods')
-marriage <- import('https://raw.githubusercontent.com/fivethirtyeight/data/master/marriage/both_sexes.csv')
+mrg <- import('https://raw.githubusercontent.com/fivethirtyeight/data/master/marriage/both_sexes.csv')
+
+library(plyr)
+rename(mrg, c("White_2534"="White", "Black_2534"="Black", "Hisp_2534" = "Hispanic"))
 ```
 
-The proportion of men and women who never marry has been increasing in the US and has reached almost reached 50%
+#Analysis
 
-```{r}
+A preliminary look at the data indicates that the proportion of men and women who never marry has been increasing in the US and has reached almost reached 50%. 
+
+```{r include=T, message=F, echo=FALSE, warning=FALSE, error=FALSE}
+
 library(ggplot2)
-ggplot(data = marriage, mapping = aes(year, all_2534)) + geom_line()+xlab('year') + ylab('% people who never married')
-
-
+ggplot(data = mrg, mapping = aes(year, all_2534)) + geom_line()+xlab('year') + ylab('% people who never married')
 
 ```
 
-[^key]
 
-[^key] : this is a footnote
+The rate of marriage varies across race. The average proportion (over time) of people who never married for each racial group is given below: 
+
+```{r include=T, message=F, echo=FALSE, warning=FALSE, error=FALSE}
+library(dplyr)
+for (i in 10:12) {
+  mrg[,i] %>%
+  mean() %>%
+  round(.,2) %>%  
+  paste0("The mean for ",names(mrg)[i], " is ",.,'\n') %>%
+  cat()  
+}
+
+```
+
+
+A black person is thus most likely to have never got married. The trend is stable across time as can be seen from the graph below. A similar trend is seen for poor vs. rich people. 
+```{r include=T, message=F, echo=FALSE, warning=FALSE, error=FALSE}
+
+library(ggplot2)
+p1 <- ggplot(data = mrg, aes(year)) + geom_line(aes(y= mrg[,10], colour = "White")) + geom_line(aes(y= mrg[,11], colour = "Black")) + geom_line(aes(y= mrg[,12], colour = "Hispanic")) + xlab('year') + ylab('% people who never married')
+
+p2 <- ggplot(data = mrg, aes(year)) +geom_line(aes(y= mrg[,21], colour = "Rich"))   + geom_line(aes(y= mrg[,19], colour = "Poor"))+  geom_line(aes(y= mrg[,20], colour = "Middle Income"))+ xlab('year') + ylab('% people who never married')
+
+library(gridExtra)
+grid.arrange(p1,p2, ncol=2, top = "Marriage trends across Socio-Economic groups in the US")
+```

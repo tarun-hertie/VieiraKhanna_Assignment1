@@ -1,5 +1,5 @@
 #running libraries and packages
-#instal.packages(rio)
+#install.packages('rio') 
 library(rio)
 library(plyr)
 library(dplyr)

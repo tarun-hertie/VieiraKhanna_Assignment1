@@ -44,6 +44,14 @@ s1 <- summary(alc$beer_servings)
 
 ```
 
+The average consumption of alcohol of any kind across all countries is `r mean(alc$total_litres_of_pure_alcohol)`
+Similar trend is seen for overall consumption of all three kinds of alcohol wherein the consumption is much lower than the average for a large number of countries.
+
+```{r}
+hist(alc$total_litres_of_pure_alcohol)
+```
+
+
 For example, a closer look at the data reveals that the while the average beer consumption across all countries in 2010 was `r s1[4]`, it varied from `r s1[1]` to a maximum of `r s1[6]`. In most countries the consumption per person was only `r s1[3]`. 
 
 ### _Top 10 countries by consumption_  

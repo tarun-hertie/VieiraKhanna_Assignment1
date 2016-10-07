@@ -1,14 +1,14 @@
 ---
 title: "Pair Assignment 1"
 author: "Tarun Khanna and Camila Vieira"
-output: html_document
+output: pdf_document
 ---
 
 ```{r, include=T, message=F, warning=FALSE, error=FALSE, echo=FALSE}
 source('data_download.R')
 ```
 
-# Exercise 1 -  Alcohol Consumption across the World
+## Exercise 1 -  Alcohol Consumption across the World
 This exercise deals with the analysis of data on consumption of alcohol per person across the world. The analysis has been performed on data provided by the World Health Organisation, Global Information System on Alcohol and Health (GISAH), 2010) 
 
 According to the data, beer was the drink of choice in 2010.The average consumption (per person in units of serving) of different forms of alcohol - beer, wine and spirits - was: 
@@ -41,12 +41,14 @@ The average consumption of alcohol of any kind across all countries is `r mean(a
 Similar trend is seen for overall consumption of all three kinds of alcohol wherein the consumption is much lower than the average for a large number of countries.
 
 ```{r, include=T, message=F, warning=FALSE, error=FALSE, echo=FALSE}
-hist(alc$total_litres_of_pure_alcohol)
+
+hist(alc$total_litres_of_pure_alcohol, xlab = 'Consuption per person', ylab = 'No. of countries', main = 'Consumption Pattern of Alcohol')
+
 ```
 
 For example, a closer look at the data reveals that the while the average beer consumption across all countries in 2010 was `r s1[4]`, it varied from `r s1[1]` to a maximum of `r s1[6]`. In most countries the consumption per person was only `r s1[3]`. 
 
-### _Top 10 countries by consumption_  
+#### _Top 10 countries by consumption_  
 ```{r, include=T, message=F, warning=FALSE, error=FALSE, echo=FALSE}
 Top10_Beer <- alc[order(alc$beer_servings),]%>% top_n(n=10) %>% .[,c(1,2)]
 Top10_Wine <- alc[order(alc$wine_servings),]%>% top_n(n=10) %>% .[,c(1,4)]
@@ -58,7 +60,7 @@ l
 
 Further, the top 10 beer consuming countries same to be the same as top 10 consumers of wine and other spirits though the ranking differs with the choice of drink. While `r l[10,5]` has the highest consumption of  Wine, `r l[10,1]` has the highest consumption of Spirits.   
 
-# Exercise 2
+## Exercise 2
 
 This exercise analyses data on marriage trends in the US from 1960 to 2000. The results are based on analysis of the Decennial Census (years 1960 to 2000) and American Community Survey (years 2001-2012) 
 
@@ -70,7 +72,6 @@ library(ggplot2)
 ggplot(data = mrg, mapping = aes(year, all_2534)) + geom_line()+xlab('year') + ylab('% people who never married')
 
 ```
-
 
 The rate of marriage varies across race. The average proportion (over time) of people who never married for each racial group is given below: 
 
@@ -86,18 +87,24 @@ for (i in 10:12) {
 
 ```
 
-
 A black person is thus most likely to have never got married. The trend is stable across time as can be seen from the graph below. A similar trend is seen for poor vs. rich people. 
+
 ```{r include=T, message=F, echo=FALSE, warning=FALSE, error=FALSE}
 
-library(ggplot2)
-p1 <- ggplot(data = mrg, aes(year)) + geom_line(aes(y= mrg[,10], colour = "White")) + geom_line(aes(y= mrg[,11], colour = "Black")) + geom_line(aes(y= mrg[,12], colour = "Hispanic")) + xlab('year') + ylab('% people who never married')
+ggplot(data = mrg, aes(year)) + geom_line(aes(y= mrg[,10], colour = "White")) + geom_line(aes(y= mrg[,11], colour = "Black")) + geom_line(aes(y= mrg[,12], colour = "Hispanic")) + xlab('year') + ylab('% people who never married')
 
-p2 <- ggplot(data = mrg, aes(year)) +geom_line(aes(y= mrg[,21], colour = "Rich"))   + geom_line(aes(y= mrg[,19], colour = "Poor"))+  geom_line(aes(y= mrg[,20], colour = "Middle Income"))+ xlab('year') + ylab('% people who never married')
+ggplot(data = mrg, aes(year)) +geom_line(aes(y= mrg[,21], colour = "Rich"))   + geom_line(aes(y= mrg[,19], colour = "Poor"))+  geom_line(aes(y= mrg[,20], colour = "Middle Income"))+ xlab('year') + ylab('% people who never married') 
 
-library(gridExtra)
-grid.arrange(p1,p2, ncol=2, top = "Marriage trends across Socio-Economic groups in the US")
+
 ```
 
+The differnce in marriage rates between blacks and whites has also been increasing over time. A boxplot of the difference in never married rates (proportion of black and white people to never marry) before 1990 (year=0) and after 1990 (year=1) has increased.   
 
+```{r include=T, message=F, echo=FALSE, warning=FALSE, error=FALSE}
+
+mrg$dummy <- as.numeric(mrg$year > 1990)
+mrg$diff  <- mrg[,11] - mrg[,10]
+split(mrg$diff, mrg$dummy) %>% boxplot(.,ylab='difference in never married rates',xlab ='year')
+
+```
 
